@@ -1,0 +1,47 @@
+###########################
+# .config/i3status/config #
+###########################
+
+general {
+    colors = false
+    interval = 5
+    separator = ""
+}
+
+order += "battery all"
+order += "wireless _first_"
+order += "ethernet _first_"
+order += "volume master"
+order += "tztime berlin"
+order += "tztime local"
+
+battery all {
+    format = "( B: %percentage )"
+    format_down = ""
+    integer_battery_capacity = true
+}
+wireless _first_ {
+    format_up = "( %ip )"
+    format_down = ""
+}
+
+ethernet _first_ {
+    format_up = "( %ip )"
+    format_down = ""
+}
+
+tztime berlin {
+    format = "( %Y-%m-%d )"
+}
+
+tztime local {
+    format = "( %H:%M ) "
+}
+
+volume master {
+    format = "( V: %volume )"
+    format_muted = "( M: %volume )"
+    device = "default"
+    mixer = "Master"
+    mixer_idx = 0
+}

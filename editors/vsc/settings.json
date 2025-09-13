@@ -1,0 +1,52 @@
+{
+    "editor.fontSize": 22, // Same size as 18 in literally every other app
+    "editor.fontFamily": "'Source Code Pro Medium', 'monospace', monospace",
+    "editor.insertSpaces": false,
+    "editor.lineNumbers": "relative",
+    "editor.rulers": [80],
+    "editor.autoClosingBrackets": "never",
+    "editor.autoClosingQuotes": "never",
+    "editor.stickyScroll.enabled": false,
+    "editor.minimap.enabled": false,
+    "editor.lightbulb.enabled": "off",
+    "files.trimTrailingWhitespace": true,
+    "files.eol": "\n",
+    "files.insertFinalNewline": true,
+    "editor.tokenColorCustomizations": {
+        "[Default Dark Modern]": { // Increased saturation
+            "comments": "#519F0B",
+            "variables": "#74E1FF",
+            "keywords": "#DA70D6",
+            "functions": "#DDDD8A",
+            "numbers": "#ABD296",
+            "strings": "#E1895C",
+            "types": "#00D2AD",
+            "textMateRules": [{
+                "scope": "storage.type",
+                "settings": {
+                    "foreground": "#009FEE"
+                }
+            }]
+        }
+    },
+    "workbench.colorCustomizations": {
+        "[Default Dark Modern]": {
+            "editor.background": "#0E0E0E",
+            "editor.foreground": "#DBDBDB"
+        },
+        "[*]": {
+            "editorGutter.addedBackground": "#3F9E3F",
+            "editorGutter.modifiedBackground": "#FAC516",
+            "editorGutter.deletedBackground": "#C75A4C"
+        }
+    },
+    "window.titleBarStyle": "native",
+    "window.commandCenter": false,
+    "workbench.layoutControl.enabled": false,
+    "scm.diffDecorationsGutterPattern": {
+        "modified": false
+    },
+    "git.openRepositoryInParentFolders": "always",
+    "security.workspace.trust.enabled": false,
+    "keyboard.dispatch": "keyCode" // Otherwise it doesn't recognise swapped esc-caps
+}

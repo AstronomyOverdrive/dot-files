@@ -1,0 +1,97 @@
+/* * * * * * * * * * * * * *
+ * .config/gtk-3.0/gtk.css *
+ * * * * * * * * * * * * * */
+
+/* Hide PowerManager icon */
+#xfce4-power-manager-plugin image {
+    -gtk-icon-transform: scale(0.0);
+}
+
+/* WindowList */
+.tasklist {
+    -XfceTasklist-min-button-length: 150px;
+    -XfceTasklist-max-button-length: 150px;
+}
+.tasklist image {
+    -gtk-icon-transform: scale(0.0);
+    margin: -25px;
+}
+.tasklist button {
+    background: transparent;
+    border: 1px solid transparent;
+    padding-right: 5px;
+    border-radius: 0px;
+    border-bottom: 2px solid dimgray;
+    outline: none;
+    color: lightgray;
+    margin-right: 2px;
+}
+.tasklist button:hover {
+    color: white;
+    border-bottom: 2px solid white;
+}
+.tasklist button:checked {
+    color: white;
+    border-bottom: 2px solid purple;
+}
+.tasklist button:checked:hover {
+    color: white;
+    border-bottom: 2px solid magenta;
+}
+
+/* WorkspaceSwitcher */
+.xfce4-panel widget grid button.flat.toggle {
+    font-family: "Source Code Pro", monospace;
+    font-size: 15px;
+    border-radius: 0px;
+    color: darkgray;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+}
+.xfce4-panel widget grid button.flat.toggle:hover {
+    border-bottom: 2px solid white;
+}
+.xfce4-panel widget grid button.flat.toggle:checked {
+    color: white;
+    font-weight: bold;
+}
+
+/* WhiskerMenu */
+#whiskermenu-button {
+    font-size: 24px; /* I use " ▢ " as icon */
+}
+#whiskermenu-window * {
+    border: none;
+    background-color: black;
+}
+#whiskermenu-window button {
+    background: none;
+    border: 1px solid transparent;
+}
+#whiskermenu-window button:focus,
+#whiskermenu-window button:hover,
+#whiskermenu-window button:active,
+#whiskermenu-window button:selected {
+    background: none;
+    border: 1px solid white;
+}
+#whiskermenu-window  treeview:selected,
+#whiskermenu-window  treeview:hover,
+#whiskermenu-window  treeview:active,
+#whiskermenu-window  treeview:focus,
+#whiskermenu-window  iconview:hover,
+#whiskermenu-window  iconview:focus,
+#whiskermenu-window  iconview:active,
+#whiskermenu-window  iconview:selected {
+    background-color: #202020;
+    color: white;
+}
+
+/* Change all fonts */
+/*
+.xfce4-panel * {
+    font-family: "Adwaita Sans", sans-serif;
+    font-size: 16px;
+}
+*/

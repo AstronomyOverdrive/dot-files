@@ -1,0 +1,55 @@
+/* * * * * * * * * * * * * *
+ * .config/gtk-3.0/gtk.css *
+ * * * * * * * * * * * * * */
+
+#clock-button,
+#xfce4-power-manager-plugin,
+.xfce4-panel widget image {
+    color: #FACAEC;
+}
+
+.tasklist {
+    -XfceTasklist-min-button-length: 150px;
+    -XfceTasklist-max-button-length: 150px;
+}
+.tasklist image,
+#xfce4-power-manager-plugin image {
+    -gtk-icon-transform: scale(0.0);
+    margin: -25px;
+}
+.tasklist button {
+    background: transparent;
+    border: 1px solid transparent;
+    padding-right: 5px;
+    border-radius: 0px;
+    border-right: 1px solid #252525;
+    outline: none;
+    color: #969696;
+    font-size: 14px;
+}
+.tasklist button:hover,
+.tasklist button:checked:hover {
+    color: #CAECFA;
+
+}
+.tasklist button:checked {
+    color: #FACAEC;
+}
+
+.xfce4-panel widget grid button.flat.toggle {
+    font-family: "Source Code Pro", monospace;
+    font-size: 15px;
+    border-radius: 0px;
+    color: darkgray;
+    background: none;
+    border: none;
+}
+.xfce4-panel widget grid button.flat.toggle:hover,
+.xfce4-panel widget grid button.flat.toggle:checked:hover {
+    color: #CAECFA;
+    font-weight: bold;
+}
+.xfce4-panel widget grid button.flat.toggle:checked {
+    color: #FACAEC;
+    font-weight: bold;
+}

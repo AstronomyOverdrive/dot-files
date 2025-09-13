@@ -1,0 +1,26 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * *
+ * Add this code to the bottom of                *
+ * "stylesheet.css" for workspace-indicator      *
+ * found in /usr/share/gnome-shell/extensions/   *
+ * * * * * * * * * * * * * * * * * * * * * * * * */
+
+.panel-workspace-indicator-box .workspace {
+    width: 22px;
+    border: none;
+    border-top: 2px solid #595959;
+    margin-top: 10px;
+    background-color: transparent;
+}
+
+.panel-workspace-indicator-box .workspace.active {
+    border-color: purple;
+}
+
+.workspace-indicator-window-preview {
+    background-color: transparent;
+    border: none;
+}
+
+.workspace-indicator-window-preview.active {
+    background-color: transparent;
+}

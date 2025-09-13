@@ -1,0 +1,153 @@
+#####################
+# .config/i3/config #
+#####################
+
+# If you don't already have Source Code Pro Installed:
+# https://github.com/adobe-fonts/source-code-pro
+
+# Set default font for i3
+font pango:Source Code Pro Medium 12
+
+# Borders and gaps
+gaps inner 2
+client.focused #7A49A5 #252525 #FFFFFF #7A49A5 #7A49A5
+client.focused_inactive #141414 #252525 #FFFFFF #141414 #141414
+client.unfocused #141414 #252525 #FFFFFF #141414 #141414
+for_window [class="^.*"] border pixel 1
+
+# Setup mod key, Mod4 = Superkey, Mod1 = Left Alt
+set $mod Mod4
+set $refresh_i3status killall -SIGUSR1 i3status
+
+# Bindings
+bindsym $mod+Shift+r restart
+bindsym $mod+Shift+q kill
+bindsym $mod+Shift+f fullscreen
+bindsym $mod+Shift+p exec --no-startup-id loginctl poweroff
+bindsym $mod+Mod1+p exec --no-startup-id loginctl reboot
+bindsym $mod+Shift+space floating toggle
+bindsym $mod+space focus mode_toggle
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+# To get device name/props, use: xinput list -> xinput list-props [DEVICE NAME]
+#bindsym $mod+z exec --no-startup-id xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Tapping Enabled' 0
+#bindsym $mod+x exec --no-startup-id xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Tapping Enabled' 1
+
+# Application shortcuts
+bindsym $mod+d exec --no-startup-id dmenu_run -b -fn 'Source Code Pro Medium:pixelsize=16' -nb '#000000' -sb '#7A49A5' -i
+bindsym $mod+w exec --no-startup-id firefox
+bindsym $mod+e exec --no-startup-id geany
+bindsym $mod+f exec --no-startup-id thunar
+bindsym $mod+t exec --no-startup-id xfce4-terminal
+bindsym $mod+Return exec --no-startup-id xfce4-terminal
+bindsym $mod+Print exec --no-startup-id flameshot gui
+
+# Bindings to change focus
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# Bindings to move windows
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# Bindings to resize windows
+bindsym $mod+Mod1+l resize shrink width 10 px or 10 ppt
+bindsym $mod+Mod1+j resize grow height 10 px or 10 ppt
+bindsym $mod+Mod1+k resize shrink height 10 px or 10 ppt
+bindsym $mod+Mod1+h resize grow width 10 px or 10 ppt
+bindsym $mod+Mod1+Right resize shrink width 10 px or 10 ppt
+bindsym $mod+Mod1+Up resize grow height 10 px or 10 ppt
+bindsym $mod+Mod1+Down resize shrink height 10 px or 10 ppt
+bindsym $mod+Mod1+Left resize grow width 10 px or 10 ppt
+
+# Workspace setup for multiple monitors
+workspace 1 output DP-2
+workspace 2 output DP-2
+workspace 3 output DP-2
+workspace 4 output DP-2
+workspace 5 output DP-2
+workspace 6 output HDMI-0
+workspace 7 output HDMI-0
+workspace 8 output HDMI-0
+workspace 9 output HDMI-0
+workspace 10 output HDMI-0
+
+# Bindings to change workspace
+bindsym $mod+1 workspace 1
+bindsym $mod+2 workspace 2
+bindsym $mod+3 workspace 3
+bindsym $mod+4 workspace 4
+bindsym $mod+5 workspace 5
+bindsym $mod+6 workspace 6
+bindsym $mod+7 workspace 7
+bindsym $mod+8 workspace 8
+bindsym $mod+9 workspace 9
+bindsym $mod+0 workspace 10
+
+# Bindings to move focused window to workspace
+bindsym $mod+Shift+1 move container to workspace 1
+bindsym $mod+Shift+2 move container to workspace 2
+bindsym $mod+Shift+3 move container to workspace 3
+bindsym $mod+Shift+4 move container to workspace 4
+bindsym $mod+Shift+5 move container to workspace 5
+bindsym $mod+Shift+6 move container to workspace 6
+bindsym $mod+Shift+7 move container to workspace 7
+bindsym $mod+Shift+8 move container to workspace 8
+bindsym $mod+Shift+9 move container to workspace 9
+bindsym $mod+Shift+0 move container to workspace 10
+
+# Change where new windows spawn
+bindsym $mod+b split h
+bindsym $mod+v split v
+
+#bar {
+#    status_command i3status
+#    tray_output none
+#    colors {
+#        background #000000
+#        statusline #A549A2
+#        focused_workspace #000000 #000000 #A549A2
+#        active_workspace #000000 #000000 #969696
+#        inactive_workspace #000000 #000000 #969696
+#        urgent_workspace #000000 #FF5733 #FFFFFF
+#    }
+#}
+
+# Always exec commands
+# Display settings, sometimes inconsistent so it's better to use a script
+#exec_always --no-startup-id xrandr --output DP-2 --mode 1920x1080 --rate 144 --primary
+#exec_always --no-startup-id xrandr --output HDMI-0 --mode 1920x1080 --rate 60 --left-of DP-2
+# Pointer settings. To get device name/props, use: xinput list -> xinput list-props [DEVICE NAME]
+exec_always --no-startup-id xinput set-prop 'Kingsis Peripherals ZOWIE Gaming mouse' 'libinput Accel Profile Enabled' 0 1 0
+exec_always --no-startup-id xinput set-prop 'Kingsis Peripherals ZOWIE Gaming mouse' 'libinput Accel Speed' 0.000000
+#exec_always --no-startup-id xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Tapping Enabled' 1
+#exec_always --no-startup-id xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Natural Scrolling Enabled' 1
+#exec_always --no-startup-id xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Disable While Typing Enabled' 0
+# Keyboard layout + swap caps/esc keys
+exec_always --no-startup-id setxkbmap se -option "caps:swapescape"
+# Turn off mobo speaker
+exec_always --no-startup-id xset b off
+
+# Exec / startup commands
+exec --no-startup-id xfce4-panel
+exec --no-startup-id nm-applet
+exec --no-startup-id flameshot
+exec --no-startup-id parcellite
+exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+#exec --no-startup-id xfce4-terminal -e 'bash -c "fastfetch; bash"'
+#exec --no-startup-id firefox -P start
+#exec --no-startup-id gentoo-pipewire-launcher

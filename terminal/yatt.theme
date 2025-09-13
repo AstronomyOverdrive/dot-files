@@ -1,0 +1,12 @@
+# ~/.local/share/xfce4/terminal/colorschemes/
+[Scheme]
+
+Name=Yet Another Terminal Theme
+
+ColorForeground=#EBEBEB
+ColorBackground=#171717
+
+# black;red;green;yellow;blue;purple;cyan;light-gray;gray;bright-red;bright-green;bright-yellow;bright-blue;bright-purple;bright-cyan;white
+ColorPalette=#171717;#C75A4C;#3F9E3F;#FA8916;#01C0FB;#D47FD4;#8EDBD7;#E5E5E5;#7F7F7F;#FF0000;#00FF00;#FFFF00;#5C5CFF;#FF00FF;#00FFFF;#EBEBEB
+
+# Uncheck show bold text in bright colors

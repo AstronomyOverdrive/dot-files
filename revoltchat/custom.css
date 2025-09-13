@@ -1,0 +1,56 @@
+div[class^="MessageArea__Area-sc-"] {
+    background-image: linear-gradient(black, #3e003e);
+}
+
+div[class^="Header-sc-"],
+div[class^="MessageBox__Base-sc-"],
+div[class^="_homeScreen_"],
+div[class^="Base-sc-"],
+div[class^="RevoltApp__Routes-sc-"],
+div[class^="ServerSidebar__ServerList-sc-"],
+div[class^="ServerHeader__ServerBanner-sc-"],
+div[class^="MemberList__ListCategory-sc-"],
+details[class^="Details-sc-"] > summary,
+div[class^="SidebarBase__GenericSidebarBase-sc-"] {
+    background: black;
+}
+
+div[class^="SidebarBase__GenericSidebarBase-sc-"],
+div[class^="ServerSidebar__ServerList-sc-"] {
+    border-left: 2px solid #0e0e0e;
+    border-right: 2px solid #0e0e0e;
+}
+
+div[class^="ServerHeader__ServerBanner-sc-"]:has(> div[class^="container"]) {
+    border-radius: 0;
+    border: 2px solid #0e0e0e;
+}
+
+div[class^="Header-sc-"] {
+    border-bottom: 2px solid #0e0e0e;
+}
+
+div[class^="Shadow-sc-"] > div {
+    display: none;
+}
+
+div[class^="MessageBase__MessageInfo-sc-"]
+svg[class^="IconBase-sc-"] {
+    outline: 1px solid #d3d7cf;
+    border-radius: 50%;
+}
+
+div:has(> div[class^="MessageBase-sc-"]) {
+    max-width: 80ch;
+}
+
+div[class^="MessageBase__MessageContent-sc-"] {
+    font-size: 16px;
+    background: rgba(0,0,0,0.95);
+    padding: 8px;
+    border-radius: 8px;
+}
+
+time {
+    font-size: 12px;
+}

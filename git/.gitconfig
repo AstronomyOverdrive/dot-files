@@ -1,0 +1,7 @@
+[user]
+	email = contact@williampettersson.eu
+	name = William Pettersson
+[core]
+	pager = cat -
+[init]
+	defaultBranch = main

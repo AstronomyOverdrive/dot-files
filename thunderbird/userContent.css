@@ -1,0 +1,16 @@
+#msgFeedSummaryBody {
+    font-size: 22px;
+    width: 50%;
+    margin-left: 25%;
+    margin-top: 22px;
+    color: #D3D7CF;
+    background: #0E0E0E;
+}
+#msgFeedSummaryBody a {
+    color: lightskyblue;
+}
+/*
+img {
+    display: none;
+}
+*/

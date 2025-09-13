@@ -1,0 +1,95 @@
+/* * * * * * * * * * * * * * * * * * * * * *
+ * .themes/[folder]/cinnamon/cinnamon.css  *
+ * * * * * * * * * * * * * * * * * * * * * */
+
+/* Have panel be black */
+.panel-top, .panel-bottom, .panel-left, .panel-right {
+    background-color: black;
+    color: white;
+    font-size: 16px;
+}
+
+#Tooltip {
+    color: white;
+    background-color: black;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+/*
+.menu {
+    color: white;
+    background-color: black;
+    background-color: transparent; /* Comment out this line on versions older than Cinnamon 6.4 */
+/*}
+.menu-applications-outer-box {
+    background-color: black;
+    border-radius: 10px;
+    padding: 10px;
+}
+.menu-categories-box,
+.menu-applications-inner-box,
+.menu-favorites-box {
+    background-color: black;
+}
+*/
+.menu-favorites-box {
+    background-color: #242424;
+}
+
+.switcher-list {
+    color: white;
+    padding: 10px;
+    border: 2px solid dimgray;
+    border-radius: 10px;
+    background-color: black;
+}
+.switcher-list .item-box:selected {
+    border-radius: 10px;
+    background-color: dimgray;
+}
+.switcher-list .thumbnail {
+    width: 256px;
+}
+.grouped-window-list-item-box {
+    font-size: 14px;
+}
+.grouped-window-list-item-box.top, .grouped-window-list-item-box.bottom {
+    border-bottom-width: 2px;
+}
+.grouped-window-list-item-box:active {
+    border-color: dimgray;
+}
+.grouped-window-list-item-box:hover {
+    border-color: white;
+}
+.grouped-window-list-item-box:checked {
+    border-color: white;
+}
+.grouped-window-list-item-box:focus {
+    border-color: purple;
+}
+.grouped-window-list-item-box:focus:hover {
+    border-color: magenta;
+}
+
+.workspace-button {
+    color: darkgray;
+    width: 1em;
+    font-size: 14px;
+    padding: 0;
+    border: 2px solid transparent;
+    background-color: black;
+}
+.workspace-button:outlined {
+    background-color: black;
+    font-weight: bold;
+    color: white;
+}
+.workspace-button:outlined:hover {
+    background-color: black;
+}
+.workspace-button:hover {
+    color: white;
+    background-color: black;
+}

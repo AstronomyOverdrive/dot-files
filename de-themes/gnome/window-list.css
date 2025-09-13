@@ -1,0 +1,70 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * *
+ * Add this code to the bottom of                *
+ * "stylesheet.css" for window-list              *
+ * found in /usr/share/gnome-shell/extensions/   *
+ * * * * * * * * * * * * * * * * * * * * * * * * */
+
+/* Application list underline */
+/* Replaces the default box shadow effect */
+/* Set "box-shadow: none;" to fully remove box shadows / underlining */
+.window-button > StWidget,
+.window-button:focus > StWidget,
+.window-button:active > StWidget,
+.window-picker-toggle > StWidget,
+.window-picker-toggle:checked > StWidget,
+.window-button.focused:active > StWidget,
+.window-picker-toggle:checked:active > StWidget,
+.window-button.minimized > StWidget,
+.window-button.minimized:active > StWidget {
+    box-shadow: 0px -2px inset dimgray; /* Normal application colour */
+}
+.window-button:hover > StWidget {
+    box-shadow: 0px -2px inset white; /* Hovering application colour */
+}
+.window-button.focused > StWidget {
+    box-shadow: 0px -2px inset purple; /* Focused application colour */
+}
+.window-button:hover .window-button.focused > StWidget {
+    box-shadow: 0px -2px inset magenta; /* Hovering focused application colour */
+}
+
+/* Don't darken minimized applications title */
+.window-button.minimized > StWidget {
+    color: #bbb;
+}
+
+/* Reduces application name width */
+.window-button > StWidget {
+    -st-natural-width: 12.5em;
+    max-width: 12.5em;
+}
+
+/* Uncomment to hide application icons */
+/*
+.window-button-icon {
+    width: 0px;
+    height: 0px;
+}
+*/
+
+/* Makes workspace buttons square */
+.window-list-workspace-indicator .workspace {
+    width: 22px;
+    border-radius: 0px;
+}
+/* Replaces border with underline for current workspace indicator */
+.window-list-workspace-indicator .workspace.active {
+    border-color: black;
+    box-shadow: 0px 2px purple; /* Current workspace colour */
+}
+.window-list-workspace-indicator .workspace:hover {
+    box-shadow: 0px 2px white; /* Hovering workspace colour */
+}
+.window-list-workspace-indicator .workspace.active:hover {
+    box-shadow: 0px 2px magenta; /* Hovering current workspace colour */
+}
+/* Hide window miniature in workspace indicator */
+.window-list-workspace-indicator .window-list-window-preview {
+    background-color: #595959;
+    border: none;
+}
