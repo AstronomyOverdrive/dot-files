@@ -1,9 +1,13 @@
+include /usr/share/doc/newsboat/contrib/colorschemes/solarized-dark
+reload-threads 8
 refresh-on-startup yes
 run-on-startup select-tag
 max-items 20
 show-read-articles no
 bind-key n toggle-show-read-feeds
+bind-key m select-tag
 bind-key h quit
 bind-key j down
 bind-key k up
 bind-key l open
+ignore-article "*" "link =~ \"\/shorts\/\"" # Hide YouTube shorts
