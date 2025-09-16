@@ -3,6 +3,11 @@ alias pmr='doas pacman -Rs'
 alias pmu='doas pacman -Syu && flatpak update'
 alias ..="cd .."
 alias :q="exit"
+alias rss="newsboat"
+
+ytrss () {
+    echo http://www.youtube.com/feeds/videos.xml?channel_id=$(curl $1 | grep -m 1 -o /channel/[A-Za-z0-9]* | head -n 1 | cut -d "/" -f 3)
+}
 
 mkcd () {
     mkdir $1 && cd $1
