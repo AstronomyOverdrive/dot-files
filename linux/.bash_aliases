@@ -6,7 +6,7 @@ alias :q="exit"
 alias rss="newsboat"
 
 ytrss () {
-    echo http://www.youtube.com/feeds/videos.xml?channel_id=$(curl $1 | grep -m 1 -o /channel/[A-Za-z0-9]* | head -n 1 | cut -d "/" -f 3)
+    echo http://www.youtube.com/feeds/videos.xml?channel_id=$(curl $1 | grep -m 1 -o /channel/[^\"]* | head -n 1 | cut -d "/" -f 3)
 }
 
 mkcd () {
