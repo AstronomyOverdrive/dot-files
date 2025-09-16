@@ -1,7 +1,8 @@
 include /usr/share/doc/newsboat/contrib/colorschemes/solarized-dark
 reload-threads 8
 refresh-on-startup yes
-run-on-startup select-tag
+#run-on-startup select-tag
+run-on-startup toggle-show-read-feeds
 max-items 20
 show-read-articles no
 bind-key n toggle-show-read-feeds
