@@ -153,8 +153,9 @@ require('pckr').add {
 	-- Colourscheme
 	--'Mofiqul/vscode.nvim';
 	'navarasu/onedark.nvim',
-	-- Gitsigns
-	'lewis6991/gitsigns.nvim',
+	-- Gitsigns / vim-signify
+	--'lewis6991/gitsigns.nvim',
+	'mhinz/vim-signify',
 	-- Live Preview
 	'brianhuster/live-preview.nvim',
 }

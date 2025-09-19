@@ -114,8 +114,8 @@ require('onedark').setup {
 }
 require('onedark').load()
 
--- 6. Gitsigns
-require('gitsigns').setup {
+-- 6. Gitsigns / vim-signify
+--[[ require('gitsigns').setup {
 	signs = {
 		delete = { text = '┃' }
 	},
@@ -124,7 +124,17 @@ require('gitsigns').setup {
 	}
 }
 vim.keymap.set("n", "<leader>gd", ":Gitsigns preview_hunk<cr>", {})
-
+]]
+vim.cmd [[set updatetime=100]]
+vim.cmd [[highlight SignifySignAdd guifg=#8EBD6B guibg=NONE]]
+vim.cmd [[highlight SignifySignDelete guifg=#E55561 guibg=NONE]]
+vim.cmd [[highlight SignifySignChange guifg=#C98E56 guibg=NONE]]
+vim.cmd [[let g:signify_sign_add = '┃']]
+vim.cmd [[let g:signify_sign_delete = '┃']]
+vim.cmd [[let g:signify_sign_delete_first_line = '┃']]
+vim.cmd [[let g:signify_sign_change = '┃']]
+vim.cmd [[let g:signify_sign_change_delete = '┃']]
+vim.keymap.set("n", "<leader>gd", ":SignifyHunkDiff<cr>", {})
 -- 7. Live Preview
 require('livepreview.config').set({
 	port = 5500,

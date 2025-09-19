@@ -1,0 +1,9 @@
+[ui]
+username = William Pettersson <contact@williampettersson.eu>
+
+[web]
+style = monoblue
+allow-push = *
+push_ssl = False
+port = 5000
+allow-archive = True

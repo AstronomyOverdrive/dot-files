@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Mercurial</title>
+	<style>
+		body {
+			margin: 0;
+			background: #4B4B4C;
+		}
+
+		iframe {
+			width: 100vw;
+			height: calc(100vh - 2rem);
+			border: none;
+		}
+
+		#inputs {
+			text-align: center;
+		}
+
+		#error {
+			color: tomato;
+			font-family: sans-serif;
+			font-weight: bold;
+		}
+	</style>
+</head>
+
+<body>
+	<main>
+		<!-- Change IP here -->
+		<iframe id="iframe" src="http://127.0.0.1:5000"></iframe>
+
+		<div id="inputs">
+			<input type="text" name="name" id="name" placeholder="Name">
+			<input type="text" name="desc" id="desc" placeholder="Description">
+			<input type="text" name="cont" id="cont" placeholder="Contact">
+			<button id="create">Create repo</button>
+			<button id="remove">Remove repo</button>
+			<span id="error"></span>
+		</div>
+	</main>
+
+	<script>
+		const repoName = document.getElementById("name");
+		const repoDesc = document.getElementById("desc");
+		const repoCont = document.getElementById("cont");
+		const createBtn = document.getElementById("create");
+		const removeBtn = document.getElementById("remove");
+		const errorSpan = document.getElementById("error");
+		const iframe = document.getElementById("iframe");
+
+		function createRepo() {
+			const cleanName = repoName.value.replaceAll(/[^A-Za-z0-9-_]/g, "");
+			errorSpan.textContent = "";
+			if (cleanName !== "") {
+				const repo = {
+					name: repoName.value,
+					folder: cleanName,
+					description: repoDesc.value || "No description", // Second value will be used if input is empty
+					contact: repoCont.value || "Admin" // Second value will be used if input is empty
+				}
+				sendCmd(`cd $HOME/hg-repos && mkdir ${repo.folder} && cd ${repo.folder} && hg init && printf "[web]\nname=${repo.name}\ndescription=${repo.description}\ncontact=${repo.contact}\n" > .hg/hgrc`);
+			} else {
+				errorSpan.textContent = "Enter valid name";
+			}
+		}
+
+		function removeRepo() {
+			const cleanName = repoName.value.replaceAll(/[^A-Za-z0-9-_]/g, "");
+			errorSpan.textContent = "";
+			if (cleanName !== "") {
+				sendCmd(`rm -rf $HOME/hg-repos/${cleanName}`);
+			} else {
+				errorSpan.textContent = "Enter valid name";
+			}
+		}
+
+		function sendCmd(command) {
+			createBtn.disabled = true;
+			removeBtn.disabled = true;
+			// Change IP here
+			const Socket = new WebSocket("ws://127.0.0.1:5001");
+			Socket.addEventListener("open", (event) => {
+				Socket.send(command);
+				setTimeout(() => {
+					iframe.src = iframe.src; // Force-update iframe
+					createBtn.disabled = false;
+					removeBtn.disabled = false;
+					repoName.value = "";
+					repoDesc.value = "";
+					repoCont.value = "";
+				}, 1000); // Wait a bit to let server run commands
+				Socket.close();
+			});
+		}
+
+		createBtn.addEventListener("click", createRepo);
+		removeBtn.addEventListener("click", removeRepo);
+	</script>
+</body>
+
+</html>
