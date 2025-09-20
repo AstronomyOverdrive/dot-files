@@ -126,11 +126,14 @@ function! StripTrailing()
 endfunction
 
 
-" VCDiff (Will only update on save)
+" VCDiff
 augroup vc-diff
     autocmd!
-    autocmd InsertEnter * call VCDiff()
-    autocmd BufWritePost * call VCDiff()
+    autocmd InsertLeave * call VCDiff()
+    autocmd InsertEnter * call sign_unplace("vcDiffs")
+	" or you might prefer:
+	"autocmd TextChangedI * call VCDiff()
+	autocmd TextChanged * call VCDiff()
 augroup END
 
 highlight diffAdd ctermfg=green ctermbg=NONE
@@ -151,7 +154,7 @@ function! VCDiff()
         let vcRoot = expand("%:p:h").."/RCS/"
     endif
 
-    " GIT
+    " GIT / Mercurial
     const fullPath = expand("%:p")
     const filePath = split(fullPath, "/")
     let searchPath = "/"
@@ -160,16 +163,26 @@ function! VCDiff()
         if isdirectory(searchPath..".git/")
             let vcRoot = searchPath
             let vcSystem = "GIT"
-        endif
+			let relPath = split(fullPath, searchPath)[0]
+		elseif isdirectory(searchPath..".hg/")
+            let vcRoot = searchPath
+            let vcSystem = "HG"
+			let relPath = split(fullPath, searchPath)[0]
+		endif
     endfor
 
     if vcRoot != "NONE"
         let vcDiff = ""
-        if vcSystem == "GIT"
-            let vcDiff = system("cd "..vcRoot.." && git diff --unified=0 "..fullPath)
-        elseif vcSystem == "RCS"
+        if vcSystem == "RCS"
             let vcDiff = system("cd "..vcRoot.." && rcsdiff -U 0 "..expand("%:p"))
-        endif
+		else
+			silent! w! /tmp/VimVCDiff
+			if vcSystem == "GIT"
+				let vcDiff = system("cd "..vcRoot.." && git show $(git rev-parse --abbrev-ref HEAD):"..relPath.." | diff -U 0 - /tmp/VimVCDiff")
+			elseif vcSystem == "HG"
+				let vcDiff = system("cd "..vcRoot.." && hg cat "..relPath.." | diff -U 0 - /tmp/VimVCDiff")
+			endif
+		endif
         const vcHunks = split(vcDiff, "@@")
         let counter = 0
         call sign_unplace("vcDiffs")
