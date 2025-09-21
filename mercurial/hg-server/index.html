@@ -58,12 +58,12 @@
 			errorSpan.textContent = "";
 			if (cleanName !== "") {
 				const repo = {
+					action: "create",
 					name: repoName.value,
-					folder: cleanName,
 					description: repoDesc.value || "No description", // Second value will be used if input is empty
 					contact: repoCont.value || "Admin" // Second value will be used if input is empty
 				}
-				sendCmd(`cd $HOME/hg-repos && mkdir ${repo.folder} && cd ${repo.folder} && hg init && printf "[web]\nname=${repo.name}\ndescription=${repo.description}\ncontact=${repo.contact}\n" > .hg/hgrc`);
+				sendCmd(JSON.stringify(repo));
 			} else {
 				errorSpan.textContent = "Enter valid name";
 			}
@@ -73,7 +73,7 @@
 			const cleanName = repoName.value.replaceAll(/[^A-Za-z0-9-_]/g, "");
 			errorSpan.textContent = "";
 			if (cleanName !== "") {
-				sendCmd(`rm -rf $HOME/hg-repos/${cleanName}`);
+				sendCmd(JSON.stringify({action: "remove", name: repoName.value}));
 			} else {
 				errorSpan.textContent = "Enter valid name";
 			}
