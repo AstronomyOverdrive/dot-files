@@ -7,7 +7,7 @@
 -- 3. Telescope
 -- 4. Treesitter
 -- 5. Colourscheme
--- 6. Gitsigns
+-- 6. vim-signify
 -- 7. Live Preview
 
 -- 1. CMP
@@ -54,33 +54,17 @@ require("mason").setup()
 require("mason-lspconfig").setup({
 	ensure_installed = { "lua_ls", "csharp_ls", "cssls", "html", "pylsp", "ts_ls", "gopls" }
 })
-local on_attach = function(_, _)
-	vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, {})
-	vim.keymap.set('n', '<leader>re', require('telescope.builtin').lsp_references, {})
-	vim.keymap.set('n', '<leader>k', vim.lsp.buf.hover, {})
-	vim.keymap.set('n', '<leader>j', '<cmd>lua vim.diagnostic.open_float()<cr>', {})
-end
-require 'lspconfig'.lua_ls.setup {
-	on_attach = on_attach
-}
-require 'lspconfig'.csharp_ls.setup {
-	on_attach = on_attach
-}
-require 'lspconfig'.cssls.setup {
-	on_attach = on_attach
-}
-require 'lspconfig'.html.setup {
-	on_attach = on_attach
-}
-require 'lspconfig'.pylsp.setup {
-	on_attach = on_attach
-}
-require 'lspconfig'.ts_ls.setup {
-	on_attach = on_attach
-}
-require 'lspconfig'.gopls.setup {
-	on_attach = on_attach
-}
+vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, {})
+vim.keymap.set('n', '<leader>re', require('telescope.builtin').lsp_references, {})
+vim.keymap.set('n', '<leader>k', vim.lsp.buf.hover, {})
+vim.keymap.set('n', '<leader>j', '<cmd>lua vim.diagnostic.open_float()<cr>', {})
+vim.lsp.enable('lua_ls')
+vim.lsp.enable('csharp_ls')
+vim.lsp.enable('cssls')
+vim.lsp.enable('html')
+vim.lsp.enable('pylsp')
+vim.lsp.enable('ts_ls')
+vim.lsp.enable('gopls')
 
 -- 3. Telescope
 local builtin = require('telescope.builtin')
@@ -98,33 +82,12 @@ require 'nvim-treesitter.configs'.setup {
 }
 
 -- 5. Colourscheme
---[[
-require('vscode').setup({
-    transparent = true, -- Use terminals background colour rather than the themes
-    italic_comments = true,
-    underline_links = true,
-    color_overrides = {
-        vscLineNumber = '#FFFFFF',
-    }
-})
-vim.cmd.colorscheme "vscode"
-]]
 require('onedark').setup {
 	style = 'darker'
 }
 require('onedark').load()
 
--- 6. Gitsigns / vim-signify
---[[ require('gitsigns').setup {
-	signs = {
-		delete = { text = '┃' }
-	},
-	signs_staged = {
-		delete = { text = '┃' }
-	}
-}
-vim.keymap.set("n", "<leader>gd", ":Gitsigns preview_hunk<cr>", {})
-]]
+-- 6. vim-signify
 vim.cmd [[set updatetime=100]]
 vim.cmd [[highlight SignifySignAdd guifg=#8EBD6B guibg=NONE]]
 vim.cmd [[highlight SignifySignDelete guifg=#E55561 guibg=NONE]]
@@ -135,6 +98,7 @@ vim.cmd [[let g:signify_sign_delete_first_line = '┃']]
 vim.cmd [[let g:signify_sign_change = '┃']]
 vim.cmd [[let g:signify_sign_change_delete = '┃']]
 vim.keymap.set("n", "<leader>gd", ":SignifyHunkDiff<cr>", {})
+
 -- 7. Live Preview
 require('livepreview.config').set({
 	port = 5500,

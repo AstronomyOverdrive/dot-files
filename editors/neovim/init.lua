@@ -27,30 +27,11 @@ vim.keymap.set('v', '<C-p>', 'd"+p')
 
 -- Search
 vim.opt.wrapscan = false
-vim.keymap.set('n', '<leader>nn', ':noh<cr>')
+vim.keymap.set('n', '<leader>hh', ':noh<cr>')
 
 -- Unbind command history
 vim.keymap.set('n', 'q:', '')
 vim.keymap.set('n', 'Q', '')
-
--- Fix awkward keybinds on nordic layout (although I usually just swap to US layout)
-vim.keymap.set('v', '¤', '$')
-vim.keymap.set('n', '¤', '$')
-vim.keymap.set('i', '¤', '$')
-vim.keymap.set('n', '§', '@')
-vim.keymap.set('i', '§', '@')
-vim.keymap.set('i', 'å', '`')
-vim.keymap.set('i', 'Å', '\\')
-vim.keymap.set('i', 'ä', ']')
-vim.keymap.set('i', 'Ä', '}')
-vim.keymap.set('i', 'ö', '[')
-vim.keymap.set('i', 'Ö', '{')
-vim.keymap.set('n', 'Ä', '}')
-vim.keymap.set('n', 'Ö', '{')
--- ...and still have access to Å/Ä/Ö
-vim.keymap.set('i', '<C-å>', 'å')
-vim.keymap.set('i', '<C-ä>', 'ä')
-vim.keymap.set('i', '<C-ö>', 'ö')
 
 -- Tabs and buffers
 vim.keymap.set('n', '<leader>n', ':tabnew<cr>')
@@ -68,8 +49,6 @@ vim.keymap.set('n', '<leader>9', ':tabn9<cr>')
 vim.keymap.set('n', '<leader>0', ':tabn10<cr>')
 
 -- Snippets
---vim.keymap.set('n', '<leader>jsda', 'o/**<cr>Description<cr>@param {} - <cr>/<Esc>kllviw')
---vim.keymap.set('n', '<leader>jsdc', ':%s/\t\\*/ */g<cr>')
 vim.keymap.set('n', '<leader>html',
 	'i<!DOCTYPE html><cr><html lang="en"><cr><head><cr><meta charset="UTF-8"><cr><meta name="viewport" content="width=device-width, initial-scale=1"><cr><title>Webpage</title><cr><link rel="icon" href="assets/images/favicon.png"><cr><link href="style/main.css" rel="stylesheet"><cr><script src="scripts/main.js" defer></script><cr><BS></head><cr><body><cr><header><cr></header><cr><cr><main><cr></main><cr><cr><footer><cr></footer><cr><cr><script><cr>// Inline script<cr><BS></script><cr><BS></body><cr><BS></html><Esc>gg')
 
@@ -97,8 +76,8 @@ vim.api.nvim_create_user_command(
 vim.api.nvim_create_autocmd({ "VimEnter", "BufAdd" }, {
 	pattern = { "*.psc" },
 	callback = function()
-		vim.cmd [[call matchadd('Number', '[A-Za-z]')]]
-		vim.cmd [[call matchadd('Function', '[0-9]')]]
+		vim.cmd [[call matchadd('Number', '[A-Za-z0-9]')]]
+		vim.cmd [[call matchadd('Function', '\<0\>\|\<1\>\|\<2\>\|\<3\>\|\<4\>\|\<5\>\|\<6\>\|\<7\>\|\<8\>\|\<9\>')]]
 		vim.cmd [[call matchadd('Constant', '\.[A-Za-z]\+')]]
 		vim.cmd [[call matchadd('Constant', '[A-Za-z]\+(')]]
 		vim.cmd [[call matchadd('Normal', '[^A-Za-z0-9]\+')]]
@@ -151,10 +130,8 @@ require('pckr').add {
 		run = ':TSUpdate'
 	},
 	-- Colourscheme
-	--'Mofiqul/vscode.nvim';
 	'navarasu/onedark.nvim',
-	-- Gitsigns / vim-signify
-	--'lewis6991/gitsigns.nvim',
+	-- vim-signify
 	'mhinz/vim-signify',
 	-- Live Preview
 	'brianhuster/live-preview.nvim',
