@@ -131,9 +131,9 @@ augroup vc-diff
     autocmd!
     autocmd InsertLeave * call VCDiff()
     autocmd InsertEnter * call sign_unplace("vcDiffs")
-	" or you might prefer:
-	"autocmd TextChangedI * call VCDiff()
-	autocmd TextChanged * call VCDiff()
+    " or you might prefer:
+    "autocmd TextChangedI * call VCDiff()
+    autocmd TextChanged * call VCDiff()
 augroup END
 
 highlight diffAdd ctermfg=green ctermbg=NONE
@@ -150,7 +150,7 @@ function! VCDiff()
     if filereadable(expand("%:p")..",v")
         let vcRoot = expand("%:p:h")
     endif
-    if filereadable(expand("%:p:h").."/RCS/"..expand("%:t:r")..expand("%:e")..",v")
+    if filereadable(expand("%:p:h").."/RCS/"..expand("%:t:r").."."..expand("%:e")..",v")
         let vcRoot = expand("%:p:h").."/RCS/"
     endif
 
@@ -158,31 +158,32 @@ function! VCDiff()
     const fullPath = expand("%:p")
     const filePath = split(fullPath, "/")
     let searchPath = "/"
-    for directory in filePath
-        let searchPath = searchPath..directory.."/"
-        if isdirectory(searchPath..".git/")
-            let vcRoot = searchPath
-            let vcSystem = "GIT"
-			let relPath = split(fullPath, searchPath)[0]
-		elseif isdirectory(searchPath..".hg/")
-            let vcRoot = searchPath
-            let vcSystem = "HG"
-			let relPath = split(fullPath, searchPath)[0]
-		endif
-    endfor
+	if vcRoot == "NONE"
+		for directory in filePath
+			let searchPath = searchPath..directory.."/"
+			if isdirectory(searchPath..".git/")
+				let vcRoot = searchPath
+				let vcSystem = "GIT"
+				let relPath = split(fullPath, searchPath)[0]
+			elseif isdirectory(searchPath..".hg/")
+				let vcRoot = searchPath
+				let vcSystem = "HG"
+				let relPath = split(fullPath, searchPath)[0]
+			endif
+		endfor
+	endif
 
     if vcRoot != "NONE"
         let vcDiff = ""
-        if vcSystem == "RCS"
-            let vcDiff = system("cd "..vcRoot.." && rcsdiff -U 0 "..expand("%:p"))
-		else
-			silent! w! /tmp/VimVCDiff
-			if vcSystem == "GIT"
-				let vcDiff = system("cd "..vcRoot.." && git show $(git rev-parse --abbrev-ref HEAD):"..relPath.." | diff -U 0 - /tmp/VimVCDiff")
-			elseif vcSystem == "HG"
-				let vcDiff = system("cd "..vcRoot.." && hg cat "..relPath.." | diff -U 0 - /tmp/VimVCDiff")
-			endif
+		silent! w! /tmp/VimVCDiff
+		if vcSystem == "GIT"
+			let vcDiff = system("cd "..vcRoot.." && git show $(git rev-parse --abbrev-ref HEAD):"..relPath.." | diff -U 0 - /tmp/VimVCDiff")
+		elseif vcSystem == "HG"
+			let vcDiff = system("cd "..vcRoot.." && hg cat "..relPath.." | diff -U 0 - /tmp/VimVCDiff")
+		elseif vcSystem == "RCS"
+			let vcDiff = system("cd "..vcRoot.." && co -p "..expand("%:t:r").."."..expand("%:e").." | diff -U 0 - /tmp/VimVCDiff")
 		endif
+		call system("rm -rf /tmp/VimVCDiff")
         const vcHunks = split(vcDiff, "@@")
         let counter = 0
         call sign_unplace("vcDiffs")
