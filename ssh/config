@@ -1,0 +1,9 @@
+Host github.com
+   HostName github.com
+   PreferredAuthentications publickey
+   IdentityFile ~/.ssh/gitkey
+
+Host codeberg.org
+   HostName codeberg.org
+   PreferredAuthentications publickey
+   IdentityFile ~/.ssh/gitkey

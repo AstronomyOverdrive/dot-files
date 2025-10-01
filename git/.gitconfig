@@ -1,7 +1,12 @@
 [user]
 	email = contact@williampettersson.eu
 	name = William Pettersson
+	signingkey = contact@williampettersson.eu
 [core]
 	pager = cat -
 [init]
 	defaultBranch = main
+[commit]
+	gpgsign = true
+[tag]
+	gpgsign = true
