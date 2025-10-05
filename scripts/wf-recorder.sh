@@ -1,9 +1,9 @@
 #!/bin/sh
 
 printf "1. None\n2. Microphone\n3. Desktop\n"
-read -p "Select audio source (1/2/3): " -n1 option
+read -p "Select audio source (1/2/3): " option
 printf "\n"
-read -p "Open webcam? (Y/N): " -n1 webcam
+read -p "Open webcam? (Y/N): " webcam
 
 if [ $option = "2" ]; then
     audioin="-aalsa_input.pci-0000_05_00.6.analog-stereo" # pactl list sources | grep Name
@@ -16,7 +16,7 @@ else
     printf "\n\nNo audio\n\n"
 fi
 
-read -p "Press enter to start." -n1
+read -p "Press enter to start." none
 
 if [ $webcam = "y" ] ||  [ $webcam = "Y" ]; then
     mpv av://v4l2:/dev/video0 --profile=low-latency --untimed=yes --video-latency-hacks=yes --wayland-internal-vsync=yes --video-sync=display-desync &
