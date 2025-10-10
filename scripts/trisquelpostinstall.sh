@@ -2,11 +2,24 @@
 
 # Assuming you've installed using netinstall with the console enviroment
 
+wm="i3" # Window manager to install, "i3" or "sway"
 golang="yes" # Install golang
 dotnet="yes" # Install dotnet sdk
 nodejs="yes" # Install nvm, nodejs, npm and typescript
 fonts="yes" # Install source code pro (requires git)
 flatpak="no" # Install and setup flatpak
+
+##################
+# Sections:      #
+# - UPDATE       #
+# - INSTALL      #
+# - REMOVE       #
+# - CLEANUP      #
+# - GTK3         #
+# - AUDIO        #
+# - DOAS         #
+# - TMPFS (/tmp) #
+##################
 
 ############
 ## UPDATE ##
@@ -23,14 +36,12 @@ sudo apt install -y abrowser
 sudo apt install -y ark
 sudo apt install -y curl
 #sudo apt install -y doas
-sudo apt install -y flameshot
 sudo apt install -y gcc
 sudo apt install -y geany
 sudo apt install -y geany-plugins
 sudo apt install -y gimp
 sudo apt install -y git
 sudo apt install -y gvfs
-sudo apt install -y i3
 sudo apt install -y inkscape
 sudo apt install -y kdenlive
 sudo apt install -y krita
@@ -41,7 +52,6 @@ sudo apt install -y mercurial
 sudo apt install -y mpv
 sudo apt install -y newsboat
 sudo apt install -y numix-icon-theme-circle
-sudo apt install -y parcellite
 sudo apt install -y pipewire
 sudo apt install -y pipewire-pulse
 sudo apt install -y policykit-1-gnome
@@ -50,11 +60,35 @@ sudo apt install -y thunar
 sudo apt install -y tlp
 sudo apt install -y vim
 sudo apt install -y wireplumber
-sudo apt install -y xclip
 sudo apt install -y xfce4-terminal
-sudo apt install -y xinit
-sudo apt install -y xorg
-sudo apt install -y xserver-xorg-input-wacom
+
+if [ $wm = "sway" ]; then
+	sudo apt install -y sway
+	sudo apt install -y swayidle
+	sudo apt install -y swaylock
+	sudo apt install -y xdg-desktop-portal-gtk
+	sudo apt install -y xdg-desktop-portal-wlr
+	sudo apt install -y wofi
+	sudo apt install -y polkitd
+	sudo apt install -y mako-notifier
+	sudo apt install -y grim
+	sudo apt install -y i3status
+	sudo apt install -y wf-recorder
+	sudo apt install -y wl-clipboard
+	mkdir -p $HOME/.config/sway
+	cp /etc/sway/config $HOME/.config/sway/
+	sed -i "s/$(grep foot /etc/sway/config)/set \$term xfce4-terminal/g" $HOME/.config/sway/config
+	sed -i "s/$(grep dmenu /etc/sway/config)/set \$menu wofi --show=drun -i --sort-order=alphabetical/g" $HOME/.config/sway/config
+elif [ $wm = "i3" ]; then
+	sudo apt install -y flameshot
+	sudo apt install -y i3
+	sudo apt install -y parcellite
+	sudo apt install -y xclip
+	sudo apt install -y xinit
+	sudo apt install -y xorg
+	sudo apt install -y xserver-xorg-input-wacom
+fi
+
 
 # Golang
 if [ $golang = "yes" ]; then
@@ -63,6 +97,12 @@ if [ $golang = "yes" ]; then
 	sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go1.25.0.linux-amd64.tar.gz
 	rm go*.tar.gz
 	echo "export PATH=\$PATH:/usr/local/go/bin" >> .profile
+	if [ $wm = "sway" ]; then
+		cd $HOME
+		export PATH=$PATH:/usr/local/go/bin
+		go install go.senan.xyz/cliphist@latest
+		sudo cp go/bin/cliphist /usr/bin/cliphist
+	fi
 fi
 
 # NodeJS / NPM / TypeScript
@@ -99,6 +139,8 @@ fi
 if [ $flatpak = "yes" ]; then
 	sudo apt install -y flatpak
 	flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+	flatpak remote-modify --subset=floss flathub
+	#flatpak remote-modify --subset=verified_floss flathub
 fi
 
 ############
@@ -142,9 +184,16 @@ systemctl --user --now enable wireplumber.service
 #sudo chmod 0400 /etc/doas.conf
 sudo ln -s /usr/bin/sudo /usr/bin/doas
 
+###########
+## TMPFS ##
+###########
+
+echo "tmpfs   /tmp         tmpfs   rw,nodev,nosuid,mode=1777,size=4G          0  0" | sudo tee -a /etc/fstab
+
 echo "-"
 echo "All done!"
-echo "To start polkit with i3, append the following to your config file:"
+echo "Please restart your computer."
+echo "To use polkit with i3, append the following to your config file:"
 echo "exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1"
 
 exit 0
