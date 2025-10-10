@@ -8,11 +8,14 @@ set $left h
 set $down j
 set $up k
 set $right l
-set $term xfce4-terminal
-set $menu wmenu-run -b -N 000000 -n EBEBEB -S 7A49A5 -s FFFFFF -f "pango:SourceCodePro Medium 14"
+#set $term xfce4-terminal
+set $term wezterm
+#set $menu wmenu-run -b -N 000000 -n EBEBEB -S 7A49A5 -s FFFFFF -f "pango:SourceCodePro Medium 14"
+set $menu wofi --show=drun -i --sort-order=alphabetical
 
 # Output configuration
 output * bg #000000 solid_color
+#output * bg #282A36 solid_color
 # Example configuration:
 #   output HDMI-A-1 resolution 1920x1080 position 1920,0
 # You can get the names of your outputs by running: swaymsg -t get_outputs
@@ -25,6 +28,9 @@ gaps inner 2
 client.focused #7A49A5 #252525 #FFFFFF #7A49A5 #7A49A5
 client.focused_inactive #141414 #252525 #FFFFFF #141414 #141414
 client.unfocused #141414 #252525 #FFFFFF #141414 #141414
+#client.focused #44475A #282A36 #F8F8F2 #44475A #44475A
+#client.focused_inactive #282A36 #282A36 #F8F8F2 #282A36 #282A36
+#client.unfocused #282A36 #282A36 #F8F8F2 #282A36 #282A36
 default_border pixel 1
 
 # Input settings
@@ -45,8 +51,10 @@ input type:keyboard {
 bindsym $mod+f exec --no-startup-id thunar
 bindsym $mod+w exec --no-startup-id firefox
 bindsym $mod+e exec --no-startup-id geany
-bindsym $mod+Shift+p exec --no-startup-id shutdown -P now
-bindsym $mod+Mod1+p exec --no-startup-id shutdown -r now
+#bindsym $mod+Shift+p exec --no-startup-id shutdown -P now
+bindsym $mod+Shift+p exec --no-startup-id loginctl poweroff
+#bindsym $mod+Mod1+p exec --no-startup-id shutdown -r now
+bindsym $mod+Mod1+p exec --no-startup-id loginctl reboot
 bindsym $mod+Return exec $term
 bindsym $mod+Shift+q kill
 bindsym $mod+d exec $menu
@@ -64,8 +72,8 @@ bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
 bindsym Print exec grim
 bindsym $mod+a exec --no-startup-id wl-copy åäö
 bindsym $mod+c exec --no-startup-id cliphist list | head -n 1 | cliphist decode | wl-copy
-bindsym $mod+Shift+c exec --no-startup-id cliphist list | wmenu -N 000000 -n EBEBEB -S 7A49A5 -s FFFFFF -f "pango:SourceCodePro Medium 14" | cliphist decode | wl-copy
-
+#bindsym $mod+Shift+c exec --no-startup-id cliphist list | wmenu -N 000000 -n EBEBEB -S 7A49A5 -s FFFFFF -f "pango:SourceCodePro Medium 14" | cliphist decode | wl-copy
+bindsym $mod+Shift+c exec --no-startup-id cliphist list | wofi -S dmenu | cliphist decode | wl-copy
 # Bindings to change focus
 bindsym $mod+$left focus left
 bindsym $mod+$down focus down
@@ -134,10 +142,21 @@ bar {
         active_workspace #000000 #000000 #969696
         inactive_workspace #000000 #000000 #969696
         urgent_workspace #000000 #FF5733 #FFFFFF
+        #statusline #BD93F9
+        #background #1E1F29
+        #focused_workspace #1E1F29 #1E1F29 #BD93F9
+        #active_workspace #1E1F29 #1E1F29 #969696
+        #inactive_workspace #1E1F29 #1E1F29 #969696
+        #urgent_workspace #1E1F29 #FF5555 #F8F8F2
     }
 }
 
+exec --no-startup-id brightnessctl set 50%
 exec --no-startup-id rm -f $HOME/.cache/cliphist/db && wl-paste --watch cliphist store
-exec --no-startup-id mako
+#exec --no-startup-id mako
+exec --no-startup-id swaync
+exec --no-startup-id /usr/bin/pipewire
+exec --no-startup-id /usr/bin/pipewire-pulse
+exec --no-startup-id /usr/bin/wireplumber
 
 include /etc/sway/config.d/*
