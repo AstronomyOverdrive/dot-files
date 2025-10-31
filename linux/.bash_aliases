@@ -1,6 +1,8 @@
-alias pmi='doas pacman -S'
-alias pmr='doas pacman -Rs'
-alias pmu='doas pacman -Syu && flatpak update'
+alias pmi="doas pacman -S"
+alias pmr="doas pacman -Rs"
+alias pmu="doas pacman -Syu && flatpak update"
+alias se="sway input type:keyboard xkb_layout se"
+alias us="sway input type:keyboard xkb_layout us"
 alias ..="cd .."
 alias :q="exit"
 alias rss="newsboat"

@@ -2,6 +2,8 @@
 -- .config/nvim/init.lua --
 ---------------------------
 
+vim.opt.mouse = ""
+
 -- Visual
 vim.wo.number = true
 vim.wo.relativenumber = true
