@@ -6,6 +6,7 @@ alias us="sway input type:keyboard xkb_layout us"
 alias ..="cd .."
 alias :q="exit"
 alias rss="newsboat"
+export PS1="\e[0;35m\w\e[0m\e[1;35m>\e[0m "
 
 ytrss () {
     echo http://www.youtube.com/feeds/videos.xml?channel_id=$(curl $1 | grep -m 1 -o /channel/[^\"]* | head -n 1 | cut -d "/" -f 3)

@@ -52,7 +52,7 @@ cmp.setup.cmdline(':', {
 -- 2. LSP
 require("mason").setup()
 require("mason-lspconfig").setup({
-	ensure_installed = { "lua_ls", "csharp_ls", "cssls", "html", "pylsp", "ts_ls", "gopls" }
+	ensure_installed = { "lua_ls", "csharp_ls", "cssls", "html", "pylsp", "ts_ls", "gopls", "phpactor" }
 })
 vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, {})
 vim.keymap.set('n', '<leader>re', require('telescope.builtin').lsp_references, {})
@@ -65,6 +65,7 @@ vim.lsp.enable('html')
 vim.lsp.enable('pylsp')
 vim.lsp.enable('ts_ls')
 vim.lsp.enable('gopls')
+vim.lsp.enable('phpactor')
 
 -- 3. Telescope
 local builtin = require('telescope.builtin')
