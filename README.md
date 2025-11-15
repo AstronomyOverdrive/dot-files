@@ -4,4 +4,6 @@ Now *I use <del>Arch</del> Artix btw* but I also (at the time of writing) use Ge
 *This also means certain files may be outdated.*<br><br>
   
 This repo is public in case you want to use it for inspiration but don't expect any help from me if you run into issues as it's mostly uploaded here for my own convenience!<br>
-The [Arch Wiki](https://wiki.archlinux.org/) and [Gentoo Wiki](https://wiki.gentoo.org/wiki/) might be useful though.
+The [Arch Wiki](https://wiki.archlinux.org/) and [Gentoo Wiki](https://wiki.gentoo.org/wiki/) might be useful though.<br><br>
+
+TOP(1) config (keypresses): 1tzxZS2M7H2T6X4&lt;Enter&gt;W 
