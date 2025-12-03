@@ -1,6 +1,7 @@
 alias pmi="doas pacman -S"
 alias pmr="doas pacman -Rs"
-alias pmu="doas pacman -Syu && flatpak update"
+alias pmu="doas paccache -rk1 && doas paccache -ruk0 && doas pacman -Syu"
+alias lock="brightnessctl -s && brightnessctl s 0 && swaylock -i /usr/share/backgrounds/wallpaper.png && brightnessctl -r && exit"
 alias se="sway input type:keyboard xkb_layout se"
 alias us="sway input type:keyboard xkb_layout us"
 alias ..="cd .."
