@@ -7,6 +7,8 @@ alias us="sway input type:keyboard xkb_layout us"
 alias ..="cd .."
 alias :q="exit"
 alias rss="newsboat"
+alias tn="tmux"
+alias ta="tmux attach"
 export PS1="\e[0;35m\w\e[0m\e[1;35m>\e[0m "
 
 ytrss () {
