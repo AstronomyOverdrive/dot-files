@@ -19,6 +19,15 @@ mkcd () {
     mkdir $1 && cd $1
 }
 
+md () {
+    curpath=$(pwd)
+    mdpath="$HOME/.mdpreview"
+    pandoc -s -f gfm -o $mdpath/index.html $curpath/$1
+    cat $mdpath/improvegfm.html >> $mdpath/index.html
+    firefox $mdpath/index.html
+    cd $curpath
+}
+
 swallow () {
     $@ > /dev/null 2>&1 & disown && exit
 }
