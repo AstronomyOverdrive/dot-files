@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>RepoRepo</title>
+	<style>
+		html {
+			background: #242424;
+		}
+		body {
+			margin: 0;
+			background: #404040;
+			color: #F1F1F1;
+			font-family: sans-serif;
+			font-size: 1rem;
+			min-height: 100vh;
+		}
+		h1 {
+			background: black;
+			margin: 0;
+			padding: 0.5em;
+		}
+		h1 a, h1 a:visited {
+			color: darkgreen;
+			text-decoration: none;
+		}
+		h1 span {
+			color: darkred;
+		}
+		h1 a:hover {
+			color: forestgreen;
+		}
+		h1 a span:hover {
+			color: red;
+		}
+		h2 {
+			margin-bottom: 0.2em;
+		}
+		input {
+			margin-bottom: 0.5em;
+		}
+		table {
+			border-collapse: collapse;
+			border: 1px solid white;
+			font-family: monospace;
+			color: black;
+			width: 100%;
+		}
+		th, td {
+			padding: 0.5em;
+			padding-left: 1em;
+			padding-right: 1em;
+		}
+		thead {
+			text-align: left;
+			background: cornflowerblue;
+		}
+		:nth-child(even of tbody tr) {
+			background: aliceblue;
+		}
+		:nth-child(odd of tbody tr) {
+			background: lightblue;
+		}
+		tbody tr:hover {
+			background: cornsilk;
+		}
+		.delBtn {
+			background: none;
+			color: red;
+			border: 2px solid red;
+			border-radius: 50%;
+			font-weight: bold;
+		}
+		.delBtn:hover {
+			color: black;
+			border-color: black;
+			background: tomato;
+		}
+		@media only screen and (orientation: landscape) {
+			main {
+				width: 70%;
+				margin-left: 15%;
+			}
+		}
+		@media only screen and (orientation: portrait) {
+			main {
+				width: 90%;
+				margin-left: 5%;
+			}
+		}
+		@media only screen and (min-aspect-ratio: 21 / 9) {
+			body {
+				max-width: calc(100vh * 1.777);
+				margin-left: calc((100% - (100vh * 1.777)) / 2);
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<header>
+		<h1><a href="https://github.com/AstronomyOverdrive/dot-files/tree/main/git/reporepo" target="_blank">Repo<span>Repo</span></a></h1>
+	</header>
+
+	<main>
+		<section>
+			<h2>New</h2>
+			<form>
+				<label for="name">Name: </label>
+				<input type="text" name="name" id="name" value="Couldn't connect to server!" placeholder="A-Za-z0-9-_">
+				<button id="new" type="button">Create</button>
+			</form>
+		</section>
+		<section>
+			<h2>Repos</h2>
+			<label for="search">Search: </label>
+			<input type="text" name="search" id="search" placeholder="Name...">
+			<table>
+				<thead>
+					<tr>
+						<th>Delete</th>
+						<th>Name</th>
+						<th>Clone</th>
+					</tr>
+				</thead>
+				<tbody id="repos"></tbody>
+			</table>
+		</section>
+	</main>
+
+	<script>
+		"use strict";
+
+		let ip = "";
+		let port = "";
+		let cooldownActive = false;
+		let baseUrl = "";
+		let allRepos;
+		const createBtn = document.getElementById("new");
+		const nameInput = document.getElementById("name");
+		const searchInput = document.getElementById("search");
+		const repoTable = document.getElementById("repos");
+
+		function fetchData() {
+			fetch("settings.json")
+				.then((response) => response.json())
+				.then((data) => {
+					// Update connection details
+					ip = data.ip;
+					port = data.wsPort;
+					// Update repo list
+					const Socket = new WebSocket(`ws://${ip}:${port}`);
+					Socket.addEventListener("open", (event) => {
+						Socket.send(JSON.stringify({action: "fetch", name: ""}));
+						Socket.addEventListener("message", (event) => {
+							const serverData = JSON.parse(event.data);
+							baseUrl = serverData.url;
+							allRepos = serverData.repos.split("\n");
+							fillTable(allRepos);
+							nameInput.value = "";
+							createBtn.disabled = false;
+							cooldownActive = false;
+							Socket.close();
+						});
+					});
+				})
+				.catch((error) => console.log(error));
+		}
+
+		function fillTable(repos) {
+			repoTable.innerHTML = "";
+			repos.forEach(repo => {
+				if (repo !== "") {
+					repoTable.innerHTML +=
+						`<tr>
+							<td><button onclick="deleteRepo('${repo}')" class="delBtn">X</button></td>
+							<td>${repo}</td>
+							<td>git clone ${baseUrl}${repo}</td>
+						</tr>`;
+					}
+			});
+		}
+
+		function createRepo() {
+			if (typeof allRepos !== "undefined") {
+				const name = nameInput.value.replaceAll(/[^A-Za-z0-9-_]/g, "");
+				sendCmd(JSON.stringify({action: "create", name: name}));
+			}
+		}
+
+		function deleteRepo(repo) {
+			const name = repo.replaceAll(/[^A-Za-z0-9-_]/g, "");
+			sendCmd(JSON.stringify({action: "delete", name: name}));
+		}
+
+		function sendCmd(command) {
+			if (!cooldownActive) {
+				cooldownActive = true;
+				createBtn.disabled = true;
+				const Socket = new WebSocket(`ws://${ip}:${port}`);
+				Socket.addEventListener("open", (event) => {
+					Socket.send(command);
+					setTimeout(() => {
+						fetchData();
+					}, 1000); // Wait a bit to let server run commands
+					Socket.close();
+				});
+			}
+		}
+
+		function filterRepos() {
+			if (typeof allRepos !== "undefined") {
+				const phrase = searchInput.value;
+				let showRepos = allRepos.filter(name => name.includes(phrase));
+				fillTable(showRepos);
+			}
+		}
+
+		createBtn.addEventListener("click", createRepo);
+		searchInput.addEventListener("keyup", filterRepos);
+		createBtn.disabled = true;
+		fetchData();
+	</script>
+</body>
+
+</html>
