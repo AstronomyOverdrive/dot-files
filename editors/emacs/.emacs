@@ -83,9 +83,6 @@
 
 (require 'evil)
 (evil-mode 1)
-(evil-global-set-key 'normal (kbd " q") 'kill-current-buffer)
-(evil-global-set-key 'normal (kbd " t") 'term)
-(evil-global-set-key 'normal (kbd " ff") 'dired)
 (evil-define-key 'normal dired-mode-map
   (kbd "D") 'dired-do-delete
   (kbd "H") 'dired-up-directory
