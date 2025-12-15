@@ -99,6 +99,10 @@
 ;; 2. Extract to $HOME/.emacs.d/tree-sitter
 ;; 3. Rename files to libtree-sitter-LANG.so (for f in *.so; do mv "$f" "libtree-sitter-$f"; done)
 
+;; Get rid of libtree-sitter-gomod not found warnings
+(setq treesit-load-name-override-list
+      '((gomod "libtree-sitter-go" "tree_sitter_go")))
+;; Modes to use treesitter in
 (add-to-list 'auto-mode-alist '("\\.lua\\'" . lua-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.py\\'" . python-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.css\\'" . css-ts-mode))
@@ -117,6 +121,7 @@
 ;; ----------------- ;;
 ;; Find servers here:
 ;; https://emacs-lsp.github.io/lsp-mode/page/languages/
+;; Install globally or symlink to /usr/bin/
 
 (unless (package-installed-p 'lsp-ui)
   (package-install 'lsp-ui))
