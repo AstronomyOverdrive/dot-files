@@ -34,6 +34,12 @@ def SocketServer(WebSocket):
                 os.popen(f'cd $HOME && mkdir -p {RepoDir}{Name} && cd {RepoDir}{Name} && git init --bare')
             elif Action == "delete" and Name != "":
                 os.popen(f'cd $HOME && rm -rf {RepoDir}{Name}')
+            elif Action == "info" and Name != "":
+                Data = {
+                    "commit": os.popen(f'cd $HOME/{RepoDir}{Name} && git log -1').read(),
+                    "files": os.popen(f'cd $HOME/{RepoDir}{Name} && git ls-tree -r --full-name --name-only HEAD').read()
+                }
+                WebSocket.send(json.dumps(Data))
             elif Action == "fetch":
                 Data = {
                     "url": f'{Username}@{IPAdress}:{RepoDir}',

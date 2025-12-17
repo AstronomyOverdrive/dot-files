@@ -72,11 +72,37 @@
 			border: 2px solid red;
 			border-radius: 50%;
 			font-weight: bold;
+			font-family: monospace;
 		}
 		.delBtn:hover {
 			color: black;
 			border-color: black;
 			background: tomato;
+		}
+		.infoBtn {
+			font-size: 1rem;
+			padding: 0;
+			margin: 0;
+			border: none;
+			color: blue;
+			background: none;
+			text-decoration: underline;
+		}
+		.infoBtn:hover {
+			color: darkblue;
+		}
+		section {
+			position: relative;
+		}
+		#infoBox {
+			position: absolute;
+			top: 0;
+			left: 0;
+			min-height: 100%;
+			width: 100%;
+			color: black;
+			background: white;
+			display: none;
 		}
 		@media only screen and (orientation: landscape) {
 			main {
@@ -88,6 +114,11 @@
 			main {
 				width: 90%;
 				margin-left: 5%;
+			}
+		}
+		@media only screen and (max-width: 600px) {
+			.nomobile {
+				display: none;
 			}
 		}
 		@media only screen and (min-aspect-ratio: 21 / 9) {
@@ -122,11 +153,22 @@
 					<tr>
 						<th>Delete</th>
 						<th>Name</th>
-						<th>Clone</th>
+						<th class="nomobile">Clone</th>
+						<th>Info</th>
 					</tr>
 				</thead>
 				<tbody id="repos"></tbody>
 			</table>
+			<div id="infoBox">
+				<div style="margin: 1em;">
+					<button id="closeInfoBtn">Close</button>
+					<h3 id="infoHeader">Git</h3>
+					<strong>Latest commit:</strong>
+					<p id="commitP"></p>
+					<strong>Files:</strong>
+					<p id="filesP"></p>
+				</div>
+			</div>
 		</section>
 	</main>
 
@@ -142,6 +184,11 @@
 		const nameInput = document.getElementById("name");
 		const searchInput = document.getElementById("search");
 		const repoTable = document.getElementById("repos");
+		const infoBox = document.getElementById("infoBox");
+		const closeInfoBtn = document.getElementById("closeInfoBtn");
+		const commitP = document.getElementById("commitP");
+		const filesP = document.getElementById("filesP");
+		const infoHeader = document.getElementById("infoHeader");
 
 		function fetchData() {
 			fetch("settings.json")
@@ -162,6 +209,7 @@
 							nameInput.value = "";
 							createBtn.disabled = false;
 							cooldownActive = false;
+							closeInfo();
 							Socket.close();
 						});
 					});
@@ -177,22 +225,47 @@
 						`<tr>
 							<td><button onclick="deleteRepo('${repo}')" class="delBtn">X</button></td>
 							<td>${repo}</td>
-							<td>git clone ${baseUrl}${repo}</td>
+							<td class="nomobile">git clone ${baseUrl}${repo}</td>
+							<td><button onclick="getInfo('${repo}')" class="infoBtn">show</td>
 						</tr>`;
 					}
 			});
 		}
 
+		function getInfo(repo) {
+			const Socket = new WebSocket(`ws://${ip}:${port}`);
+			Socket.addEventListener("open", (event) => {
+				const name = cleanName(repo);
+				Socket.send(JSON.stringify({action: "info", name: name}));
+				Socket.addEventListener("message", (event) => {
+					const serverData = JSON.parse(event.data);
+					infoHeader.textContent = name;
+					commitP.innerText = serverData.commit;
+					filesP.innerText = serverData.files;
+					infoBox.style.display = "block";
+					Socket.close();
+				});
+			});
+		}
+
+		function closeInfo() {
+			infoBox.style.display = "none";
+		}
+
 		function createRepo() {
 			if (typeof allRepos !== "undefined") {
-				const name = nameInput.value.replaceAll(/[^A-Za-z0-9-_]/g, "");
+				const name = cleanName(nameInput.value);
 				sendCmd(JSON.stringify({action: "create", name: name}));
 			}
 		}
 
 		function deleteRepo(repo) {
-			const name = repo.replaceAll(/[^A-Za-z0-9-_]/g, "");
+			const name = cleanName(repo);
 			sendCmd(JSON.stringify({action: "delete", name: name}));
+		}
+
+		function cleanName(name) {
+			return name.replaceAll(/[^A-Za-z0-9-_]/g, "");
 		}
 
 		function sendCmd(command) {
@@ -219,6 +292,7 @@
 		}
 
 		createBtn.addEventListener("click", createRepo);
+		closeInfoBtn.addEventListener("click", closeInfo);
 		searchInput.addEventListener("keyup", filterRepos);
 		createBtn.disabled = true;
 		fetchData();

@@ -6,6 +6,7 @@ While [Forgejo](https://forgejo.org/) is great it's also a bit overkill for my u
 ## Features
 Web interface features:
 - List existing repos + clone commands
+- See list of files and latest commit message
 - Search for repos
 - Create new repos
 - Delete repos
