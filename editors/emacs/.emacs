@@ -1,5 +1,9 @@
 ;; Set font
 (set-frame-font "Source Code Pro 18" nil t)
+;; Mark 80th column
+(setq-default fill-column 80)
+(set-face-attribute 'fill-column-indicator nil :foreground "grey25")
+(global-display-fill-column-indicator-mode)
 ;; Disable backup and lock files (but not autosave)
 (setq make-backup-files nil)
 (setq create-lockfiles nil)
@@ -15,6 +19,29 @@
 ;; Disable tool and menu bars
 (menu-bar-mode -1)
 (tool-bar-mode -1)
+;; I hope the Church of Emacs will forgive me for this
+(defalias 'Ex 'dired)
+;; Start term with bash
+(defun TERM ()
+  (interactive)
+  (term "/bin/bash"))
+;; Close window when killing buffer
+(defalias 'Kill 'kill-buffer-and-window)
+;; RSS
+(defun RSS ()
+  (interactive)
+  (newsticker-start)
+  (newsticker-treeview))
+(setq newsticker-url-list '( ;; Example feed
+  ("Trisquel" "https://trisquel.info/en/node/feed")
+  ("Artix" "https://artixlinux.org/feed.php")
+  ("Arch" "https://archlinux.org/feeds/news")
+  ("Gentoo GLSA" "https://security.gentoo.org/glsa/feed.rss")
+  ("Mint" "https://blog.linuxmint.com/?feed=rss2")))
+;; HTML template
+(defun html ()
+  (interactive)
+  (insert "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <title>Webpage</title>\n    <link rel=\"icon\" href=\"assets/images/favicon.png\">\n    <link href=\"style/main.css\" rel=\"stylesheet\">\n    <script src=\"scripts/main.js\" defer></script>\n  </head>\n  <body>\n    <header>\n    </header>\n\n    <main>\n    </main>\n\n    <footer>\n    </footer>\n\n    <script>\n      // Inline script\n    </script>\n  </body>\n</html>"))
 
 
 ;; ----------------------------- ;;
@@ -130,6 +157,7 @@
 
 (require 'lsp-mode)
 (add-hook 'prog-mode-hook 'lsp)
+(defalias 'Fmt 'lsp-format-buffer)
 
 
 ;; ------------------------ ;;

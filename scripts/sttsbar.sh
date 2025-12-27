@@ -1,24 +1,34 @@
-#!/bin/ksh
+#!/bin/sh
 
-# Old version, used xconsole and was called with cron
-#echo $(whoami)@$(hostname -s) \| $(apm -l)% \| $(date "+%d-%m-%Y | %H:%M") \| tskbar.sh > /dev/console
-
-update=5
+update=1
 separator="|"
-whitespace="" # Add how ever many spaces are needed here
+whitespace="" # Add however many spaces are needed here
+system=$(uname)
 
+tput civis
+tput sc
 while true
 do
-    workspace="[$(xprop -root _NET_CURRENT_DESKTOP | cut -c34-34)]"
-    user="$(whoami)@$(hostname -s)"
-    cputemp="CPU: $(sysctl hw.sensors.cpu0.temp0 | cut -c23-26)�C"
-    battery="Bat: $(apm -l)%"
-    ip=$(ifconfig athn0 | grep -w inet | cut -c7-18) # Replace athn0 with your adapter, you might also have to change cut to -c7-19
-    date=$(date "+%d-%m-%Y")
-    clock=$(date "+%H:%M")
-    clear
-    echo $user $workspace "$whitespace" $ip $separator $battery $separator $cputemp $separator $date $separator $clock $separator sttsbar.sh
-    sleep $update
+	date=$(date "+%d-%m-%Y")
+	clock=$(date "+%H:%M")
+	user="$(whoami)@$(hostname -s)"
+	workspace="[$(xprop -root _NET_CURRENT_DESKTOP | sed -E 's/[^0-9]+//')]"
+	if [ "$system" = "Linux" ]; then
+		ip=$(ip addr | grep 192.168.0.255 | cut -d " " -f 6 | cut -d "/" -f 1)
+		bigtemp=$(cat /sys/class/thermal/thermal_zone*/temp 2> /dev/null)
+		cputemp="CPU: $((bigtemp/1000))°C"
+		batinfo=$(upower -e | grep BAT | head -n1)
+		battery="Bat: $(upower -i $batinfo | grep percentage | sed -E 's/[^0-9]+//')"
+	elif [ "$system" = "OpenBSD" ]; then
+		ip=$(ifconfig | grep 192.168.0.255 | cut -d " " -f 2)
+		cputemp="CPU: $(sysctl hw.sensors.cpu0.temp0 | cut -d "=" -f 2 | cut -d "." -f 1)°C"
+		battery="Bat: $(apm -l)%"
+	fi
+	display="$user $workspace $whitespace $ip $separator $battery $separator $cputemp $separator $date $separator $clock $separator sttsbar.sh"
+	tput rc
+	echo "$display"
+	sleep $update
 done
+tput cvvis
 
 exit 0

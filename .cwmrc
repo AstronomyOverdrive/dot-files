@@ -1,28 +1,40 @@
 color activeborder dodgerblue
+color inactiveborder dimgray
+color font white
+color selfont black
+color menubg black
+color menufg dodgerblue
+
+fontname "Source Code Pro Medium:pixelsize=22"
 
 unbind-key all
 unbind-mouse all
 
 sticky yes
 
-gap 0 20 0 0
+gap 0 30 0 0
 
+# https://github.com/AstronomyOverdrive/dot-files/blob/main/scripts/sttsbar.sh
 ignore sttsbar
-
 autogroup 0 xterm,sttsbar
 
-bind-key 4-d "dmenu_run -b -fn 'monospace:pixelsize=16' -nb '#000000' -sb dodgerblue -i"
+bind-key 4-d menu-exec
 #bind-key 4-f thunar
 #bind-key 4-e geany
 bind-key 4-p "flameshot gui"
 bind-key 4-w firefox
-bind-key 4-t "xterm -bg '#171717' -fg '#D3D7CF' +sb -fa 'Source Code Pro Medium' -fs 12 -xrm 'XTerm*selectToClipboard: true'"
-bind-key 4-Return "xterm -bg '#171717' -fg '#D3D7CF' +sb -fa 'Source Code Pro Medium' -fs 12 -xrm 'XTerm*selectToClipboard: true'"
+bind-key 4-Return st
+#bind-key 4-Return "xterm -bg '#171717' -fg '#D3D7CF' +sb -fa 'Source Code Pro Medium' -fs 18 -xrm 'XTerm*selectToClipboard: true'"
 
-bind-key S4-p "shutdown -p now"
-bind-key M4-p "shutdown -r now"
+bind-key S4-p "loginctl poweroff"
+#bind-key S4-p "shutdown -p now"
+bind-key M4-p "loginctl reboot"
+#bind-key M4-p "shutdown -r now"
 
 bind-key S4-f window-maximize
+bind-key 4-t window-vtile
+bind-key S4-t window-htile
+
 bind-key 4-h window-move-left-big
 bind-key 4-j window-move-down-big
 bind-key 4-k window-move-up-big
@@ -69,5 +81,5 @@ bind-mouse 4-3 window-resize
 
 bind-key S4-r restart
 bind-key M4-q quit
-bind-key M4-l lock
-
+#bind-key M4-l lock
+bind-key M4-l slock
