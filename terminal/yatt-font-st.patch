@@ -1,0 +1,67 @@
+diff --git a/config.def.h b/config.def.h
+index 2cd740a..435e9e6 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -5,7 +5,7 @@
+  *
+  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
+  */
+-static char *font = "Liberation Mono:pixelsize=12:antialias=true:autohint=true";
++static char *font = "Source Code Pro Medium:pixelsize=24:antialias=true:autohint=true";
+ static int borderpx = 2;
+ 
+ /*
+@@ -95,33 +95,27 @@ unsigned int tabspaces = 8;
+ 
+ /* Terminal colors (16 first used in escape sequence) */
+ static const char *colorname[] = {
+-	/* 8 normal colors */
+-	"black",
+-	"red3",
+-	"green3",
+-	"yellow3",
+-	"blue2",
+-	"magenta3",
+-	"cyan3",
+-	"gray90",
+-
+-	/* 8 bright colors */
+-	"gray50",
+-	"red",
+-	"green",
+-	"yellow",
+-	"#5c5cff",
+-	"magenta",
+-	"cyan",
+-	"white",
+-
++	[0] = "#171717",
++	[1] = "#C75A4C",
++	[2] = "#3F9E3F",
++	[3] = "#FA8916",
++	[4] = "#01C0FB",
++	[5] = "#D47FD4",
++	[6] = "#8EDBD7",
++	[7] = "#E5E5E5",
++	[8] = "#7F7F7F",
++	[9] = "#FF0000",
++	[10] = "#00FF00",
++	[11] = "#FFFF00",
++	[12] = "#5C5CFF",
++	[13] = "#FF00FF",
++	[14] = "#00FFFF",
++	[15] = "#EBEBEB",
+ 	[255] = 0,
+-
+-	/* more colors can be added after 255 to use with DefaultXX */
+-	"#cccccc",
+-	"#555555",
+-	"gray90", /* default foreground colour */
+-	"black", /* default background colour */
++	[256] = "#EBEBEB",
++	[257] = "#171717",
++	[258] = "#EBEBEB",
++	[259] = "#171717",
+ };
+ 
+ 
