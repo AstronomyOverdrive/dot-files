@@ -1,0 +1,27 @@
+diff --git a/config.def.h b/config.def.h
+index 60eb376..d1facf8 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -9,8 +9,8 @@ static char *fontfallbacks[] = {
+ #define FONTSZ(x) ((int)(10.0 * powf(1.1288, (x)))) /* x in [0, NUMFONTSCALES-1] */
+ 
+ static const char *colors[] = {
+-	"#000000", /* foreground color */
+-	"#FFFFFF", /* background color */
++	"#F1F1F1", /* foreground color */
++	"#0E0E0E", /* background color */
+ };
+ 
+ static const float linespacing = 1.4;
+diff --git a/sent.c b/sent.c
+index dfadd3a..61a0552 100644
+--- a/sent.c
++++ b/sent.c
+@@ -530,6 +530,7 @@ xdraw(void)
+ 
+ 	if (!im) {
+ 		drw_rect(d, 0, 0, xw.w, xw.h, 1, 1);
++		drw_rect(d, 0, 0, xw.w / slidecount * (idx + 1), xw.h / 100, 1, 0);
+ 		for (i = 0; i < slides[idx].linecount; i++)
+ 			drw_text(d,
+ 			         (xw.w - width) / 2,
