@@ -20,18 +20,21 @@ app.get("/", async (req, res) => {
 		let html;
 		// Create repo
 		if (req.query.new !== undefined) {
-			await createRepo(cleanInput(req.query.new));
+			await createRepo(cleanInput(req.query.new, false));
 			html = header + await getRepos() + "</tbody></table>" + footer;
 		// Filter repos
 		} else if (req.query.search !== undefined) {
-			html = header + await getRepos(cleanInput(req.query.search)) + "</tbody></table>" + footer;
+			html = header + await getRepos(cleanInput(req.query.search, false)) + "</tbody></table>" + footer;
 		// Get info about repo
 		} else if (req.query.info !== undefined) {
-			html = header + "</tbody></table>" + await getInfo(cleanInput(req.query.info)) + footer;
+			html = header + "</tbody></table>" + await getInfo(cleanInput(req.query.info, false)) + footer;
 		// Delete repo
 		} else if (req.query.delete !== undefined) {
-			await deleteRepo(cleanInput(req.query.delete));
+			await deleteRepo(cleanInput(req.query.delete, false));
 			html = header + await getRepos() + "</tbody></table>" + footer;
+		// Get file contents
+		} else if (req.query.file !== undefined) {
+			html = header + "</tbody></table>" + await getFile(cleanInput(req.query.file, true)) + footer;
 		} else {
 			html = header + await getRepos() + "</tbody></table>" + footer;
 		}
@@ -72,7 +75,14 @@ async function getInfo(repo) {
 		}
 		const files = async () => {
 			const { stdout, stderr } = await asyncExec(`cd $HOME/${path}${repo} && git ls-tree -r --full-name --name-only HEAD`);
-			return stdout.replaceAll("\n", "<br>");
+			const fileNames = stdout.split("\n");
+			let filesHtml = "";
+			fileNames.forEach(fileName => {
+				if (fileName !== "") {
+					filesHtml += `<a href="./?file=${repo}//${fileName}">${fileName}</a><br>`;
+				}
+			});
+			return filesHtml;
 		}
 		return `
 		<div id="infoBox">
@@ -97,6 +107,32 @@ async function getInfo(repo) {
 	}
 }
 
+async function getFile(filePath) {
+	try {
+		const repo = filePath.split("//")[0];
+		const file = filePath.split("//")[1];
+		const { stdout, stderr } = await asyncExec(`cd $HOME/${path}${repo} && git cat-file -p @:${file}`);
+		const codeblock = stdout.replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("&", "&amp;");
+		return `
+		<div id="infoBox">
+			<div style="margin: 1em;">
+				<a href="./?info=${repo}">Close</a>
+				<h3>${repo} - ${file}</h3>
+				<pre><code>${codeblock}</code></pre>
+			</div>	  
+		</div>`;
+	} catch {
+		return `
+		<div id="infoBox">
+			<div style="margin: 1em;">
+				<a href="./">Close</a>
+				<h3>${filePath}</h3>
+				<pre><code>Nothing here.</code></pre>
+			</div>	  
+		</div>`;
+	}
+}
+
 // Create a new repo
 async function createRepo(repo) {
 	if (repo !== "") {
@@ -112,8 +148,12 @@ async function deleteRepo(repo) {
 }
 
 // Prevent user from messing up sh commands
-function cleanInput(string) {
-	return string.replaceAll(/[^A-Za-z0-9-_]/g, "");
+function cleanInput(string, filePath) {
+	if (filePath) {
+		return string.replaceAll(/[^A-Za-z0-9-_/.]/g, "");
+	} else {
+		return string.replaceAll(/[^A-Za-z0-9-_]/g, "");
+	}
 }
 
 // Get settings from settings.json
